@@ -10,7 +10,7 @@ var {
 } = React;
 var Button = require('react-native-button');
 
-var CodePush = require('@d11/codepush');
+var CodePush = require('@itspar/codepush-sdk');
 
 var UpdateButton = React.createClass({
   getInitialState: function() {

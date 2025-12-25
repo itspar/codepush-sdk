@@ -21,7 +21,7 @@ What actually happens?
 
 ### Environment
 
-* @d11/codepush version:
+* @itspar/codepush-sdk version:
 * react-native version:
 * iOS/Android/Windows version:
 * Does this reproduce on a debug build or release build?

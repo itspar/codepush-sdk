@@ -6,16 +6,16 @@ In order to integrate CodePush into your Android project, please perform the fol
 
     ```gradle
     ...
-    include ':app', ':d11_codepush'
-    project(':d11_codepush').projectDir = new File(rootProject.projectDir, '../node_modules/@d11/codepush/android/app')
+    include ':app', ':itspar_codepush'
+    project(':itspar_codepush').projectDir = new File(rootProject.projectDir, '../node_modules/@itspar/codepush-sdk/android/app')
     ```
 
-2. In your `android/app/build.gradle` file, add d11_codepush as dependency:
+2. In your `android/app/build.gradle` file, add itspar_codepush as dependency:
 
     ```gradle
     dependencies {
         ...
-        implementation project(':d11_codepush')
+        implementation project(':itspar_codepush')
         ...
     }
     ```
@@ -24,7 +24,7 @@ In order to integrate CodePush into your Android project, please perform the fol
 
     ```gradle
     ...
-    apply from: "../../node_modules/@d11/codepush/android/codepush.gradle"
+    apply from: "../../node_modules/@itspar/codepush-sdk/android/codepush.gradle"
     ...
     ```
 
@@ -106,12 +106,12 @@ In order to integrate CodePush into your Android project, please perform the fol
 
     *Note: If you need to dynamically use a different deployment, you can also override your deployment key in JS code using [Code-Push options](./api-js.md#CodePushOptions)*
 
-6. Disable autolinking for `@d11/codepush` by adding a `react-native.config.js` at your app root:
+6. Disable autolinking for `@itspar/codepush-sdk` by adding a `react-native.config.js` at your app root:
 
 ```javascript
 module.exports = {
   dependencies: {
-    '@d11/codepush': {
+    '@itspar/codepush-sdk': {
       platforms: {
         android: null,
       },

@@ -5,10 +5,10 @@ Instantly deliver JS and asset updates to your React Native apps. Know more abou
 ## 🚀 Key Features
 
 - **Full and Patch Bundle Updates**: Deliver both full updates and efficient patch updates by sending only the differences.
-- **Brotli Compression Support**: Utilize [Brotli compression](https://github.com/ds-horizon/codepush-cli#release-management) to optimize both full and patch bundles for even smaller sizes compared to the default deflate algorithm.
+- **Brotli Compression Support**: Utilize [Brotli compression](https://github.com/itspar/codepush-cli#release-management) to optimize both full and patch bundles for even smaller sizes compared to the default deflate algorithm.
 - **Base Bytecode Optimization**: Reduce patch bundle sizes significantly using the [bytecode](#understanding-base-bytecode-optimization) structure of your base bundle.
 - **Automated Bundle Handling**: Automatically manage bundles for both Android and iOS, ensuring seamless integration with the CodePush platform.
-- **Flexible Configuration**: Leverage CLI capabilities for custom configuration needs. See [CodePush CLI](https://github.com/ds-horizon/codepush-cli) for more details.
+- **Flexible Configuration**: Leverage CLI capabilities for custom configuration needs. See [CodePush CLI](https://github.com/itspar/codepush-cli) for more details.
 - **Architecture Support**: Compatible with both old and new architecture setups.
 
 ## 🔧 Getting Started with CodePush
@@ -21,10 +21,10 @@ Run the following command from your app's root directory:
 
 ```shell
 # Yarn
-yarn add @d11/codepush
+yarn add @itspar/codepush-sdk
 
 # NPM
-npm install @d11/codepush
+npm install @itspar/codepush-sdk
 ```
 
 ### Setup
@@ -32,7 +32,7 @@ npm install @d11/codepush
 Wrap your root component with `codePush` to enable OTA updates:
 
   ```javascript
-  import codePush from "@d11/codepush";
+  import codePush from "@itspar/codepush-sdk";
 
 function MyApp() {
   // Your app code here
@@ -69,7 +69,7 @@ This method effortlessly integrates CodePush and Hermes by automatically using t
 Add to `android/app/build.gradle`. This ensures the bundle is copied to the `.codepush/android` directory for processing.
 
 ```gradle
-apply from: "../../node_modules/@d11/codepush/android/codepush.gradle"
+apply from: "../../node_modules/@itspar/codepush-sdk/android/codepush.gradle"
 ```
 
 To disable the default copying of the bundle, add the following in `gradle.properties`:
@@ -84,7 +84,7 @@ In your `Podfile`, add:
 
 ```ruby
 # Import at the top
-require_relative '../node_modules/@d11/codepush/ios/scripts/codepush_pod_helpers.rb'
+require_relative '../node_modules/@itspar/codepush-sdk/ios/scripts/codepush_pod_helpers.rb'
 
 # Include in the `post_install` block:
 post_install do |installer| 
@@ -247,12 +247,12 @@ Before you start, generate your JS bundle and assets. See [Creating the JavaScri
 
 There are two ways to release OTA updates:
 
-### 1. [Using CLI](https://github.com/ds-horizon/codepush-cli?tab=readme-ov-file#release-management)
+### 1. [Using CLI](https://github.com/itspar/codepush-cli?tab=readme-ov-file#release-management)
 - Ideal for local workflows and CI/CD pipelines
-- Supports [patch bundle release](https://github.com/ds-horizon/codepush-cli?tab=readme-ov-file#patch-bundle-release)
+- Supports [patch bundle release](https://github.com/itspar/codepush-cli?tab=readme-ov-file#patch-bundle-release)
 - You can release, promote across deployments, and manage rollout percentages using CLI
 
-### 2. [Using Web Panel](https://github.com/ds-horizon/codepush-web-panel)
+### 2. [Using Web Panel](https://github.com/itspar/codepush-web-panel)
 - Use the web UI to upload bundles, configure rollout percentage, and publish
 - You can monitor, pause/resume, or adjust rollout directly from the panel.
 

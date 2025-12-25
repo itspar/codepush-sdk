@@ -9,7 +9,7 @@ var {
   View,
 } = React;
 
-var CodePush = require('@d11/codepush');
+var CodePush = require('@itspar/codepush-sdk');
 
 var UpdateOnStart = React.createClass({
   componentDidMount: function() {

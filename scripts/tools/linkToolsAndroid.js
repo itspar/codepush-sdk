@@ -13,7 +13,7 @@ exports.getJSBundleFileOverride = `
 `;
 exports.reactNativeHostInstantiation = "new ReactNativeHost(this) {";
 exports.mainActivityClassDeclaration = "public class MainActivity extends ReactActivity {";
-exports.codePushGradleLink = `\napply from: "../../node_modules/@d11/codepush/android/codepush.gradle"`;
+exports.codePushGradleLink = `\napply from: \"../../node_modules/@itspar/codepush-sdk/android/codepush.gradle\"`;
 exports.deploymentKeyName = "CodePushDeploymentKey";
 
 exports.getMainApplicationLocation = function () {

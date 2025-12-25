@@ -25,7 +25,7 @@ CodePush brings:
 
 * Staged rollouts: Gradual and controlled deployment
 
-* Enterprise scale: Battle-tested at Dream11
+* Enterprise scale: Production-tested and reliable
 
 ### How does it work?
 

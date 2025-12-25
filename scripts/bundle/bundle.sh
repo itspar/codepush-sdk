@@ -60,7 +60,7 @@ fi
 HBC_TEMP_FILE="${JS_BUNDLE_FILE}.hbc"
 HBC_SOURCEMAP_FILE="${JS_BUNDLE_FILE}.hbc.map" # NOTE: This is by convention always true
 
-./node_modules/@d11/codepush/scripts/bundle/bundle-to-binary.sh ${JS_BUNDLE_FILE} ${HBC_TEMP_FILE} ${PLATFORM} ${MAKE_SOURCEMAP}
+./node_modules/@itspar/codepush-sdk/scripts/bundle/bundle-to-binary.sh ${JS_BUNDLE_FILE} ${HBC_TEMP_FILE} ${PLATFORM} ${MAKE_SOURCEMAP}
 
 echo "Replacing JS bundle with HBC"
 mv ${HBC_TEMP_FILE} ${JS_BUNDLE_FILE}
@@ -71,7 +71,7 @@ mv ${HBC_TEMP_FILE} ${JS_BUNDLE_FILE}
 if ! [[ -z "${MAKE_SOURCEMAP}" ]]; then
   COMPOSED_SOURCEMAP_FILE="${JS_BUNDLE_FILE}.json"
 
-  ./node_modules/@d11/codepush/scripts/bundle/compose-sourcemaps.sh ${JS_SOURCEMAP_FILE} ${HBC_SOURCEMAP_FILE} ${COMPOSED_SOURCEMAP_FILE}
+  ./node_modules/@itspar/codepush-sdk/scripts/bundle/compose-sourcemaps.sh ${JS_SOURCEMAP_FILE} ${HBC_SOURCEMAP_FILE} ${COMPOSED_SOURCEMAP_FILE}
   echo "Wrote compose output ${COMPOSED_SOURCEMAP_FILE}"
   # These ones are no longer required
   rm ${JS_SOURCEMAP_FILE} ${HBC_SOURCEMAP_FILE}

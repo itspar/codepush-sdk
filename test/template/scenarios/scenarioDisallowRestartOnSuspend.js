@@ -1,5 +1,5 @@
 var CodePushWrapper = require("../codePushWrapper.js");
-import CodePush from "@d11/codepush";
+import CodePush from "@itspar/codepush-sdk";
 
 module.exports = {
     startTest: function (testApp) {

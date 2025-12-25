@@ -55,7 +55,7 @@ program
       process.env.BASE_BUNDLE_PATH = options.baseBundlePath || '';
       // Build the bundle command using the existing script
       const bundleCommand = [
-        './node_modules/@d11/codepush/scripts/bundle/bundle.sh',
+        './node_modules/@itspar/codepush-sdk/scripts/bundle/bundle.sh',
         `--dev ${options.dev}`
       ].filter(Boolean).join(' ');
 

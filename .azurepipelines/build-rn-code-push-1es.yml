@@ -46,8 +46,8 @@ extends:
 
         - script: |
             npm pack
-            npm install -g @d11/codepush*.tgz
-          displayName: 'Package @d11/codepush'
+            npm install -g @itspar/codepush-sdk*.tgz
+          displayName: 'Package @itspar/codepush-sdk'
           workingDirectory: $(Build.SourcesDirectory)
 
         - task: DeleteFiles@1

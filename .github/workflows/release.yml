@@ -25,7 +25,7 @@ jobs:
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
           echo "Current version: $PACKAGE_VERSION"
-          if npm view @d11/codepush@$PACKAGE_VERSION version; then
+          if npm view @itspar/codepush-sdk@$PACKAGE_VERSION version; then
             echo "Error: Version $PACKAGE_VERSION already exists on npm"
             exit 1
           fi

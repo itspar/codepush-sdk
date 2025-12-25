@@ -23,9 +23,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@d11/dota@workspace:.":
+"@itspar/codepush-sdk@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@d11/dota@workspace:."
+  resolution: "@itspar/codepush-sdk@workspace:."
   dependencies:
     "@types/assert": "npm:^1.5.2"
     "@types/mkdirp": "npm:^1.0.1"
@@ -54,7 +54,7 @@ __metadata:
     typescript: "npm:^4.4.3"
     xcode: "npm:3.0.1"
   bin:
-    dota: ./scripts/bundle/cli.js
+    codepush: ./scripts/bundle/cli.js
   languageName: unknown
   linkType: soft
 
@@ -973,9 +973,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"code-push-plugin-testing-framework@file:./code-push-plugin-testing-framework::locator=%40d11%2Fdota%40workspace%3A.":
+"code-push-plugin-testing-framework@file:./code-push-plugin-testing-framework::locator=%40itspar%2Fcodepush-sdk%40workspace%3A.":
   version: 0.0.1
-  resolution: "code-push-plugin-testing-framework@file:./code-push-plugin-testing-framework#./code-push-plugin-testing-framework::hash=a8f16e&locator=%40d11%2Fdota%40workspace%3A."
+  resolution: "code-push-plugin-testing-framework@file:./code-push-plugin-testing-framework#./code-push-plugin-testing-framework::hash=a8f16e&locator=%40itspar%2Fcodepush-sdk%40workspace%3A."
   dependencies:
     "@types/uuid": "npm:^8.3.1"
     base-64: "npm:^1.0.0"

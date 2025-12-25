@@ -800,7 +800,7 @@ RCT_EXPORT_METHOD(downloadUpdate:(NSDictionary*)updatePackage
 
 /*
  * This is the native side of the CodePush.getConfiguration method. It isn't
- * currently exposed via the "@d11/dota" module, and is used
+ * currently exposed via the "@itspar/codepush-sdk" module, and is used
  * internally only by the CodePush.checkForUpdate method in order to get the
  * app version, as well as the deployment key that was configured in the Info.plist file.
  */
@@ -936,7 +936,7 @@ RCT_EXPORT_METHOD(installUpdate:(NSDictionary*)updatePackage
 }
 
 /*
- * This method isn't publicly exposed via the "@d11/dota"
+ * This method isn't publicly exposed via the "@itspar/codepush-sdk"
  * module, and is only used internally to populate the RemotePackage.failedInstall property.
  */
 RCT_EXPORT_METHOD(isFailedUpdate:(NSString *)packageHash
@@ -964,7 +964,7 @@ RCT_EXPORT_METHOD(getLatestRollbackInfo:(RCTPromiseResolveBlock)resolve
 }
 
 /*
- * This method isn't publicly exposed via the "@d11/dota"
+ * This method isn't publicly exposed via the "@itspar/codepush-sdk"
  * module, and is only used internally to populate the LocalPackage.isFirstRun property.
  */
 RCT_EXPORT_METHOD(isFirstRun:(NSString *)packageHash

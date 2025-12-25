@@ -1,4 +1,4 @@
-import CodePush from "@d11/codepush";
+import CodePush from "@itspar/codepush-sdk";
 
 // This module wraps CodePush API calls to add test message callbacks to every function for simpler test code.
 

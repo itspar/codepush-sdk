@@ -94,9 +94,9 @@ gradle.projectsEvaluated {
 
         def nodeModulesPath;
         if (project.hasProperty('nodeModulesPath')) {
-            nodeModulesPath = "${project.nodeModulesPath}/@d11/codepush"
+            nodeModulesPath = "${project.nodeModulesPath}/@itspar/codepush-sdk"
         } else {
-            nodeModulesPath = findNodeModulePath(projectDir, "@d11/codepush")
+            nodeModulesPath = findNodeModulePath(projectDir, "@itspar/codepush-sdk")
         }
 
         def targetName = variant.name.capitalize()

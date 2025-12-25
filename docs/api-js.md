@@ -2,7 +2,7 @@
 
 ### JavaScript API Reference
 
-When you require `@d11/codepush`, the module object provides the following top-level methods in addition to the root-level [component decorator](#CodePush):
+When you require `@itspar/codepush-sdk`, the module object provides the following top-level methods in addition to the root-level [component decorator](#CodePush):
 
 * [allowRestart](#codepushallowrestart): Re-allows programmatic restarts to occur as a result of an update being installed, and optionally, immediately restarts the app if a pending update had attempted to restart the app while restarts were disallowed. This is an advanced API and is only necessary if your app explicitly disallowed restarts via the `disallowRestart` method.
 
@@ -30,7 +30,7 @@ When you require `@d11/codepush`, the module object provides the following top-l
     // Fully silent update which keeps the app in
     // sync with the server, without ever
     // interrupting the end user
-    import codePush from '@d11/codepush';
+    import codePush from '@itspar/codepush-sdk';
     
     function MyApp {
     ...
@@ -43,7 +43,7 @@ When you require `@d11/codepush`, the module object provides the following top-l
 
     ```javascript
     // Sync for updates every time the app resumes.
-    import codePush, { CodePushOptions } from '@d11/codepush';
+    import codePush, { CodePushOptions } from '@itspar/codepush-sdk';
 
     let codePushOptions: CodePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME, installMode: codePush.InstallMode.ON_NEXT_RESUME};
 
@@ -56,7 +56,7 @@ When you require `@d11/codepush`, the module object provides the following top-l
 
     ```javascript
     // Sync for updates every time the app resumes.
-    import codePush, { CodePushOptions } from '@d11/codepush';
+    import codePush, { CodePushOptions } from '@itspar/codepush-sdk';
 
     let codePushOptions: CodePushOptions = { updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE};
 
@@ -73,7 +73,7 @@ When you require `@d11/codepush`, the module object provides the following top-l
     // Active update, which lets the end user know
     // about each update, and displays it to them
     // immediately after downloading it
-    import codePush, { CodePushOptions } from '@d11/codepush';
+    import codePush, { CodePushOptions } from '@itspar/codepush-sdk';
 
     let codePushOptions: CodePushOptions = { updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE};
 
@@ -90,7 +90,7 @@ When you require `@d11/codepush`, the module object provides the following top-l
     // Make use of the event hooks to keep track of
     // the different stages of the sync process.
     import React, { useEffect } from 'react';
-    import codePush from '@d11/codepush';
+    import codePush from '@itspar/codepush-sdk';
 
     let codePushOptions: CodePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL};
 
@@ -143,7 +143,7 @@ The `codePush` decorator accepts an "options" object that allows you to customiz
 
 * __minimumBackgroundDuration__ *(Number)* - Specifies the minimum number of seconds that the app needs to have been in the background before restarting the app. This property only applies to updates which are installed using `InstallMode.ON_NEXT_RESUME` or `InstallMode.ON_NEXT_SUSPEND`, and can be useful for getting your update in front of end users sooner, without being too obtrusive. Defaults to `0`, which has the effect of applying the update immediately after a resume or unless the app suspension is long enough to not matter, regardless how long it was in the background.
 
-* __updateDialog__ *(UpdateDialogOptions)* - An "options" object used to determine whether a confirmation dialog should be displayed to the end user when an update is available, and if so, what strings to use. Defaults to `null`, which has the effect of disabling the dialog completely. Setting this to any truthy value will enable the dialog with the default strings, and passing an object to this parameter allows enabling the dialog as well as overriding one or more of the default strings. Before enabling this option within an App Store-distributed app, please refer to [this note](https://github.com/ds-horizon/codepush-sdk-ota#app-store).
+* __updateDialog__ *(UpdateDialogOptions)* - An "options" object used to determine whether a confirmation dialog should be displayed to the end user when an update is available, and if so, what strings to use. Defaults to `null`, which has the effect of disabling the dialog completely. Setting this to any truthy value will enable the dialog with the default strings, and passing an object to this parameter allows enabling the dialog as well as overriding one or more of the default strings. Before enabling this option within an App Store-distributed app, please refer to [this note](https://github.com/itspar/codepush-sdk#app-store).
 
     The following list represents the available options and their defaults:
 
@@ -271,7 +271,7 @@ Example Usage:
 
 ```javascript
     import React, { useEffect } from 'react';
-    import codePush from '@d11/codepush';
+    import codePush from '@itspar/codepush-sdk';
 
     function OnboardingProcess() {
         useEffect(() => {

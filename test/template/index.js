@@ -13,7 +13,7 @@ import {
     View
 } from 'react-native';
 
-import CodePush from "@d11/codepush";
+import CodePush from "@itspar/codepush-sdk";
 
 var testScenario = require("./CODE_PUSH_INDEX_JS_PATH");
 
