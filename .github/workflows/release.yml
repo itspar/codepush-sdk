@@ -1,7 +1,15 @@
 name: Release
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write  # Required for provenance
 
 jobs:
   release:
@@ -20,19 +28,59 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      # Check if version exists
-      - name: Check version
-        run: |
-          PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          echo "Current version: $PACKAGE_VERSION"
-          if npm view @itspar/codepush-sdk@$PACKAGE_VERSION version; then
-            echo "Error: Version $PACKAGE_VERSION already exists on npm"
-            exit 1
-          fi
-          echo "Version $PACKAGE_VERSION is ready for publishing"
+      - name: Build (if needed)
+        run: npm run build --if-present
 
-      # Publish to npm
+      # Check if version changed
+      - name: Check version change
+        id: version_check
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+          
+          # Get previous version from the last commit
+          git show HEAD~1:package.json > /tmp/old-package.json 2>/dev/null || echo '{"version":"0.0.0"}' > /tmp/old-package.json
+          PREVIOUS_VERSION=$(node -p "require('/tmp/old-package.json').version")
+          echo "Previous version: $PREVIOUS_VERSION"
+          
+          echo "PACKAGE_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
+          echo "PACKAGE_NAME=$(node -p "require('./package.json').name")" >> $GITHUB_ENV
+          
+          if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+            echo "Version changed from $PREVIOUS_VERSION to $CURRENT_VERSION"
+            echo "VERSION_CHANGED=true" >> $GITHUB_ENV
+          else
+            echo "Version unchanged - will still publish to NPM"
+            echo "VERSION_CHANGED=false" >> $GITHUB_ENV
+          fi
+
+      # Create or Update GitHub Release
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.PACKAGE_VERSION }}
+          name: Release v${{ env.PACKAGE_VERSION }}
+          body: |
+            ## Release v${{ env.PACKAGE_VERSION }}
+            
+            🚀 Published to NPM: [${{ env.PACKAGE_NAME }}@${{ env.PACKAGE_VERSION }}](https://www.npmjs.com/package/${{ env.PACKAGE_NAME }})
+            
+            ### Installation
+            ```bash
+            npm install ${{ env.PACKAGE_NAME }}@${{ env.PACKAGE_VERSION }}
+            ```
+            
+            _Last updated: ${{ github.event.head_commit.timestamp }}_
+          draft: false
+          prerelease: false
+          make_latest: true
+
+      # Publish to npm (always)
       - name: Publish to NPM
-        run: npm publish --access public
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Success notification
+        run: |
+          echo "✅ Successfully published ${{ env.PACKAGE_NAME }}@${{ env.PACKAGE_VERSION }} to NPM"
