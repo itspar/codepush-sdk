@@ -270,6 +270,27 @@ declare namespace CodePush {
     function getUpdateMetadata(updateState?: UpdateState) : Promise<LocalPackage|null>;
 
     /**
+     * Optionally sets device metadata that will be sent alongside status reports (deploy/download).
+     * This is completely optional — if not called, devices are still tracked via their SDK-generated
+     * clientUniqueId, but without a human-readable name or custom identifier.
+     *
+     * Call this once at app startup, before sync() or checkForUpdate().
+     *
+     * @param info.id          A custom unique identifier for this device (e.g. a UUID you control).
+     * @param info.deviceName  A human-readable name for the device (e.g. "John's iPhone").
+     * @param info.os          The operating system string — typically "iOS" or "Android".
+     *
+     * @example
+     * // In your root component or App.tsx:
+     * CodePush.setDeviceInfo({
+     *   id: 'my-device-uuid-1234',
+     *   deviceName: 'John\'s iPhone',
+     *   os: Platform.OS === 'ios' ? 'iOS' : 'Android',
+     * });
+     */
+    function setDeviceInfo(info: { id?: string; deviceName?: string }): void;
+
+    /**
      * Notifies the CodePush runtime that an installed update is considered successful.
      */
     function notifyAppReady(): Promise<StatusReport|void>;

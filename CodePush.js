@@ -8,7 +8,11 @@ import hoistStatics from 'hoist-non-react-statics';
 let NativeCodePush = require("react-native").NativeModules.CodePush;
 const PackageMixins = require("./package-mixins")(NativeCodePush);
 
+// Optional device metadata — set once via CodePush.setDeviceInfo()
+let _deviceInfo = { id: null, deviceName: null };
+
 async function checkForUpdate(deploymentKey = null, handleBinaryVersionMismatchCallback = null) {
+  console.log("Checking for update with deployment key " + deploymentKey + "...");
   /*
    * Before we ask the server if an update exists, we
    * need to retrieve three pieces of information from the
@@ -51,6 +55,26 @@ async function checkForUpdate(deploymentKey = null, handleBinaryVersionMismatchC
   }
 
   const update = await sdk.queryUpdateWithCurrentPackage(queryPackage);
+
+  // Server-requested rollback: clear the installed CodePush bundle and restart on the binary bundle.
+  // This is triggered when an admin rolls back a device from the dashboard.
+  if (update && update.shouldRunBinaryVersion) {
+    log("[CodePush] Server requested rollback — clearing updates and restarting on binary.");
+    // Use the atomic clearUpdatesAndRestartApp method so the CodePush directory is
+    // deleted synchronously (on the native thread) before the bundle reload is posted
+    // to the UI thread.  We also skip the `localPackage` guard so rollback works
+    // even when the device is already running the binary bundle (i.e. clearUpdates is
+    // safe to call even if the CodePush directory doesn't exist).
+    try {
+      await NativeCodePush.clearUpdatesAndRestartApp();
+    } catch (e) {
+      console.log("clearUpdatesAndRestartApp failed, falling back to separate clear and restart calls. Error:", e);
+      // Fallback for native builds that don't yet include clearUpdatesAndRestartApp.
+      NativeCodePush.clearUpdates();
+      NativeCodePush.restartApp(false);
+    }
+    return null;
+  }
 
   /*
    * There are four cases where checkForUpdate will resolve to null:
@@ -120,6 +144,12 @@ async function getUpdateMetadata(updateState) {
 function getPromisifiedSdk(requestFetchAdapter, config) {
   // Use dynamically overridden AcquisitionSdk during tests.
   const sdk = new module.exports.AcquisitionSdk(requestFetchAdapter, config);
+
+  // Inject any device info that was set via CodePush.setDeviceInfo()
+  if (_deviceInfo.id) sdk.setDeviceInfo({ id: _deviceInfo.id });
+  if (_deviceInfo.deviceName) sdk.setDeviceInfo({ deviceName: _deviceInfo.deviceName });
+  // OS is always auto-detected — no need for the user to provide it
+  sdk._deviceOs = Platform.OS === "ios" ? "iOS" : "Android";
   sdk.queryUpdateWithCurrentPackage = (queryPackage) => {
     return new Promise((resolve, reject) => {
       module.exports.AcquisitionSdk.prototype.queryUpdateWithCurrentPackage.call(sdk, queryPackage, (err, update) => {
@@ -662,6 +692,26 @@ if (NativeCodePush) {
     restartApp,
     setUpTestDependencies,
     sync,
+    /**
+     * Store optional device metadata to be sent alongside status reports.
+     * Call this once at app startup (before sync/checkForUpdate).
+     *
+     * @param {{ id?: string, deviceName?: string }} info
+     *   - id:          A custom unique identifier for this device (e.g. a UUID you generate).
+     *   - deviceName:  A human-readable name for the device.
+     *
+     * The operating system is detected automatically — no need to supply it.
+     *
+     * @example
+     * CodePush.setDeviceInfo({
+     *   id: 'my-device-uuid-1234',
+     *   deviceName: 'John\'s iPhone',
+     * });
+     */
+    setDeviceInfo: (info = {}) => {
+      if (info.id !== undefined) _deviceInfo.id = info.id;
+      if (info.deviceName !== undefined) _deviceInfo.deviceName = info.deviceName;
+    },
     disallowRestart: NativeCodePush.disallow,
     allowRestart: NativeCodePush.allow,
     clearUpdates: NativeCodePush.clearUpdates,

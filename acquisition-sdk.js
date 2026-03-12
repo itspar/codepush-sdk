@@ -53,6 +53,25 @@ class AcquisitionManager {
         this._deploymentKey = configuration.deploymentKey;
         this._ignoreAppVersion = configuration.ignoreAppVersion;
         this._packageName = configuration.packageName;
+
+        // Optional device metadata — set via setDeviceInfo
+        this._customDeviceId = configuration.customDeviceId || null;
+        this._deviceName = configuration.deviceName || null;
+        // OS is auto-detected from Platform.OS by the CodePush.js layer
+        this._deviceOs = configuration.deviceOs || null;
+    }
+
+    /**
+     * Set optional device metadata that is sent alongside status reports.
+     * Call this once at app startup, before the first sync/check.
+     *
+     * @param {object} info
+     * @param {string} [info.id]         - A user-supplied unique identifier for this device.
+     * @param {string} [info.deviceName] - A human-readable name for this device.
+     */
+    setDeviceInfo(info = {}) {
+        if (info.id !== undefined) this._customDeviceId = info.id;
+        if (info.deviceName !== undefined) this._deviceName = info.deviceName;
     }
 
     isRecoverable = (statusCode) => statusCode >= 500 || statusCode === 408 || statusCode === 429;
@@ -117,6 +136,10 @@ class AcquisitionManager {
             } else if (updateInfo.update_app_version) {
                 callback(null, { updateAppVersion: true, appVersion: updateInfo.target_binary_range });
                 return;
+            } else if (updateInfo.should_run_binary_version) {
+                // Server-requested rollback: instruct the app to clear its CodePush bundle and run the binary
+                callback(null, { shouldRunBinaryVersion: true });
+                return;
             } else if (!updateInfo.is_available) {
                 callback(null, null);
                 return;
@@ -154,6 +177,11 @@ class AcquisitionManager {
         if (this._clientUniqueId) {
             body.client_unique_id = this._clientUniqueId;
         }
+
+        // Include optional device info when available
+        if (this._customDeviceId) body.device_id = this._customDeviceId;
+        if (this._deviceName) body.device_name = this._deviceName;
+        if (this._deviceOs) body.os = this._deviceOs;
 
         if (deployedPackage) {
             body.label = deployedPackage.label;
@@ -219,6 +247,11 @@ class AcquisitionManager {
             deployment_key: this._deploymentKey,
             label: downloadedPackage.label
         };
+
+        // Include optional device info when available
+        if (this._customDeviceId) body.device_id = this._customDeviceId;
+        if (this._deviceName) body.device_name = this._deviceName;
+        if (this._deviceOs) body.os = this._deviceOs;
 
         this._httpRequester.request(Http.Verb.POST, url, this._packageName, JSON.stringify(body), (error, response) => {
             if (callback) {

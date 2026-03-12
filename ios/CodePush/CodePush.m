@@ -1043,6 +1043,22 @@ RCT_EXPORT_METHOD(clearUpdates) {
     [CodePush clearUpdates];
 }
 
+/*
+ * Atomically clears all CodePush downloaded updates and immediately restarts the app on
+ * the binary bundle.  Returns a Promise so the JS side can await completion before
+ * continuing.  This is the correct method to use for a server-requested rollback because
+ * it guarantees the directory is wiped (synchronously) before the bundle reload is
+ * dispatched to the main thread.
+ */
+RCT_EXPORT_METHOD(clearUpdatesAndRestartApp:(RCTPromiseResolveBlock)resolve
+                              rejecter:(RCTPromiseRejectBlock)reject)
+{
+    CPLog(@"Clearing updates and restarting on binary bundle.");
+    [CodePush clearUpdates];          // synchronous – deletes CodePush directory
+    [self restartAppInternal:NO];     // dispatches loadBundle() to main thread
+    resolve(nil);
+}
+
 #pragma mark - JavaScript-exported module methods (Private)
 
 /*

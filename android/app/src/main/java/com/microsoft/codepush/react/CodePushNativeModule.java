@@ -788,6 +788,26 @@ public class CodePushNativeModule extends ReactContextBaseJavaModule {
         mCodePush.clearUpdates();
     }
 
+    /**
+     * Atomically clears all CodePush downloaded updates and immediately restarts the
+     * app on the binary bundle.  Returns a Promise so the JS side can await completion
+     * before continuing.  This is the correct way to perform a server-requested rollback
+     * because it guarantees the directory is wiped before the bundle reload is dispatched
+     * to the UI thread.
+     */
+    @ReactMethod
+    public void clearUpdatesAndRestartApp(Promise promise) {
+        try {
+            CodePushUtils.log("Clearing updates and restarting on binary bundle.");
+            mCodePush.clearUpdates();       // synchronous – deletes CodePush directory
+            restartAppInternal(false);      // posts loadBundle() to UI thread
+            promise.resolve(null);
+        } catch (CodePushUnknownException e) {
+            CodePushUtils.log(e);
+            promise.reject(e);
+        }
+    }
+
     @ReactMethod
     public void addListener(String eventName) {
         // Set up any upstream listeners or background tasks as necessary
