@@ -113,7 +113,7 @@ Once you've acquired the CodePush plugin, you need to integrate it into the Xcod
    In `Info.plist` file, add following lines, replacing server-url with your server and deployment-key with your key.
    ```
    <key>CodePushServerURL</key>
-   <string>https://codepush-sdk.codepush.live/</string>
+   <string>https://server.codepush.online</string>
    <key>CodePushDeploymentKey</key>
    <string>deployment-key</string>
     ```

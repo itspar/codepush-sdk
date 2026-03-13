@@ -100,7 +100,7 @@ In order to integrate CodePush into your Android project, please perform the fol
     <resources>
         ...
         <string moduleConfig="true" name="CodePushDeploymentKey">DeploymentKey</string>
-        <string moduleConfig="true" name="CodePushServerUrl">https://codepush-sdk.codepush.live/</string>
+        <string moduleConfig="true" name="CodePushServerUrl">https://server.codepush.online</string>
     </resources>
     ```
 
